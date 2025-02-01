@@ -7,6 +7,7 @@ import { ToastContext } from '@/context/ToastContext';
 import { registerSchema } from '@/validators/RegisterSchema';
 import { useLoginMutation } from '@/store';
 import { Button } from '../ui/button';
+import Loader from '../common/Loader';
 
 function Register() {
   const [register, results] = useLoginMutation();
@@ -42,7 +43,7 @@ function Register() {
   };
 
   if (results.isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   if (results.isSuccess) {
