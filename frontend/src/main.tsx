@@ -6,15 +6,18 @@ import { BrowserRouter } from 'react-router';
 import { Provider } from 'react-redux';
 import { store } from './store/index.ts';
 import { ThemeProvider } from './context/ThemeContext.tsx';
+import { ToastProvider } from './context/ToastContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
+      <ToastProvider>
+        <Provider store={store}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </Provider>
+      </ToastProvider>
     </ThemeProvider>
   </StrictMode>
 );

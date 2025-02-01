@@ -21,8 +21,6 @@ interface ToastProviderProps {
 export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
   const [toast, setToast] = useState<ToastModel | null>(null);
 
-  console.log('Toast', toast);
-
   const showToast = useCallback(
     (message: string, type: ToastModel['type'], className?: string) => {
       setToast({ message, type, className });
