@@ -55,7 +55,7 @@ const components: { title: string; href: string; description: string }[] = [
 
 export default function Navbar() {
   return (
-    <div className="py-2 flex justify-center border-b-[1px] border-gray-900 shadow-sm shadow-gray-600">
+    <div className="py-2 px-40 flex justify-center border-b-[1px] border-gray-900 shadow-sm shadow-gray-600">
       <NavigationMenu>
         <NavigationMenuList className="flex justify-around w-screen">
           <div className="flex">

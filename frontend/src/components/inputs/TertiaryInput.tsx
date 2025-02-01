@@ -25,7 +25,7 @@ function TertiaryInput({
         <label
           htmlFor={placeholder}
           className={twMerge(
-            `text-[0.45rem] font-bold uppercase ${labelClassName}`
+            `text-[0.45rem] text-black font-bold uppercase ${labelClassName}`
           )}
         >
           {label}

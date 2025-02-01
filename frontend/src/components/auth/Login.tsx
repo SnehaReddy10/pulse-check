@@ -58,17 +58,17 @@ function Login() {
       >
         <div className="flex flex-col gap-4 md:gap-10 items-center justify-center text-nowrap">
           <div>
-            <h2 className="text-xl md:text-3xl font-semibold font-serif">
+            <h2 className="text-xl text-black md:text-3xl font-semibold font-serif">
               Welcome back
             </h2>
-            <p className="text-xxs">
+            <p className="text-xxs text-black">
               Don't have an account?{' '}
               <span className="font-bold">
                 <Link to={'/register'}>Register</Link>
               </span>
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-7">
+          <div className="grid grid-cols-1 gap-10">
             <TertiaryInput
               error={errors.email?.message}
               innerRef={registerField('email')}

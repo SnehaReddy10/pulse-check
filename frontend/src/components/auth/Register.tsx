@@ -58,10 +58,10 @@ function Register() {
       >
         <div className="flex flex-col gap-4 md:gap-10 items-center justify-center text-nowrap">
           <div>
-            <h2 className="text-xl md:text-3xl font-semibold font-serif">
+            <h2 className="text-xl text-black md:text-3xl font-semibold font-serif">
               Create new account
             </h2>
-            <p className="text-xxs">
+            <p className="text-xxs text-black">
               Already have an account?{' '}
               <span className="font-bold">
                 <Link to={'/login'}>Login</Link>
