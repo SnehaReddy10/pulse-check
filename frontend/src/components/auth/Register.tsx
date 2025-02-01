@@ -2,14 +2,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useContext, useEffect } from 'react';
-import TertiaryInput from './inputs/TertiaryInput';
+import TertiaryInput from '../inputs/TertiaryInput';
 import { ToastContext } from '@/context/ToastContext';
 import { registerSchema } from '@/validators/RegisterSchema';
-import { useRegisterMutation } from '@/store';
-import { Button } from './ui/button';
+import { useLoginMutation } from '@/store';
+import { Button } from '../ui/button';
 
 function Register() {
-  const [register, results] = useRegisterMutation();
+  const [register, results] = useLoginMutation();
   const navigate = useNavigate();
   const toastContext = useContext(ToastContext);
 
@@ -105,7 +105,7 @@ function Register() {
               type="submit"
               className="rounded-full w-56 md:w-72 md:text-xs py-2 font-semibold"
             >
-              Sign Up
+              Register
             </Button>
           </div>
         </div>
