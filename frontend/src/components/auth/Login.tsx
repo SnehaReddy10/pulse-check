@@ -51,12 +51,12 @@ function Login() {
   }
 
   return (
-    <div className="bg-[#D4D4D4] h-full w-full flex max-sm:flex-col justify-center items-center min-h-screen">
+    <div className="bg-black py-20 h-full w-full flex max-sm:flex-col justify-center items-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white flex items-center justify-center p-4 md:p-10 rounded-md shadow-gray-400 shadow-2xl"
+        className="bg-white flex items-center justify-center p-4 md:p-10 rounded-md"
       >
-        <div className="flex animate-fadeIn flex-col gap-4 md:gap-10 items-center justify-center text-nowrap">
+        <div className="flex flex-col gap-4 md:gap-10 items-center justify-center text-nowrap">
           <div>
             <h2 className="text-xl md:text-3xl font-semibold font-serif">
               Welcome back
