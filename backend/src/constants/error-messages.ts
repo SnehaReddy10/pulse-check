@@ -26,12 +26,13 @@ export const ErrorMessages = {
   },
   Service: {
     NameRequired: 'Service name is required.',
-    NotFound: 'Service not found.',
     StatusInvalid:
       'Invalid service status. Choose from: Operational, Degraded Performance, Partial Outage, Major Outage.',
     CreatedSuccessfully: 'Service created successfully.',
+    OrganizationIdRequired: 'Organization ID is required to fetch services.',
+    ServiceNotFound: 'No services found for this organization.',
   },
   Server: {
-    InternalServerError: 'Internal Server error',
+    InternalServerError: 'Something went wrong. Please try again later.',
   },
 };
