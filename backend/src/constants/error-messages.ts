@@ -10,17 +10,28 @@ export const ErrorMessages = {
     UserNotFound: 'User not found. Please check your credentials.',
     InvalidCredentials: 'Invalid email or password.',
     SignInSuccessful: 'Sign-in successful.',
-    Unauthorized: 'User is not authenticated.',
     Forbidden: 'You do not have the required permissions.',
+  },
+  Auth: {
+    Forbidden: 'You do not have permission to perform this action.',
+    Unauthorized: 'Unauthorized access. Please log in.',
+    InvalidToken: 'Invalid authentication token.',
+  },
+  Organization: {
+    NameIsRequired: 'Organization name is required.',
+    IDRequired: 'Organization ID is required.',
+    NotFound: 'Organization not found.',
+    AlreadyExists: 'An organization with this name already exists.',
+    CreatedSuccessfully: 'Organization created successfully.',
+  },
+  Service: {
+    NameRequired: 'Service name is required.',
+    NotFound: 'Service not found.',
+    StatusInvalid:
+      'Invalid service status. Choose from: Operational, Degraded Performance, Partial Outage, Major Outage.',
+    CreatedSuccessfully: 'Service created successfully.',
   },
   Server: {
     InternalServerError: 'Internal Server error',
-  },
-  Auth: {
-    Unauthorized: 'Unauthorized',
-  },
-  Organization: {
-    AlreadyExists: 'Organization already exists.',
-    CreatedSuccessfully: 'Organization created successfully.',
   },
 };

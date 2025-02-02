@@ -11,6 +11,7 @@ import passport from './config/passport';
 import { authMiddleware } from './middlewares/auth.middleware';
 import { session } from './config/session';
 import { organizationRouter } from './routes/organization.router';
+import { serviceRouter } from './routes/service.router';
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/api/v1/auth', authRouter);
 app.use(authMiddleware);
 
 app.use('/api/v1/organizations', organizationRouter);
+app.use('/api/v1/services', serviceRouter);
 
 app.listen(process.env.PORT ?? 3000, () => {
   console.log(`Listening to port ${process.env.PORT ?? 3000}`);
