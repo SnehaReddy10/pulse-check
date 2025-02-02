@@ -12,6 +12,7 @@ export const organizationApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['organizationId', 'token'],
   endpoints(builder) {
     return {
       createOrganization: builder.mutation({
@@ -20,12 +21,25 @@ export const organizationApi = createApi({
           url: '',
           body: payload,
         }),
+        invalidatesTags: [
+          { type: 'token', id: localStorage.getItem('token') ?? '' },
+        ],
       }),
       getAllOrganizations: builder.query({
         query: () => ({
           method: 'GET',
           url: '',
         }),
+        providesTags: ({ data }) => {
+          const orgTags = data.map((x: any) => ({
+            type: 'organizationId',
+            id: x._id,
+          }));
+          return [
+            ...orgTags,
+            { type: 'token', id: localStorage.getItem('token') ?? '' },
+          ];
+        },
       }),
     };
   },

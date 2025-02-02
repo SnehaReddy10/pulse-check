@@ -22,18 +22,22 @@ function Grid({
       <Table>
         <TableCaption>{title}</TableCaption>
         <TableHeader>
-          <TableRow>
+          <TableRow className="hover:bg-black">
             {headers.map((x) => (
-              <TableHead className={`${x.className}`}>{x.label}</TableHead>
+              <TableHead key={x.id} className={`${x.className}`}>
+                {x.label}
+              </TableHead>
             ))}
           </TableRow>
         </TableHeader>
         <TableBody>
           {rows.map((x) => {
             return (
-              <TableRow>
+              <TableRow className="hover:bg-gray-800">
                 {x.map((y: any) => (
-                  <TableCell className={`${y.className}`}>{y.label}</TableCell>
+                  <TableCell key={y.id} className={`${y.className}`}>
+                    {y.label}
+                  </TableCell>
                 ))}
               </TableRow>
             );
