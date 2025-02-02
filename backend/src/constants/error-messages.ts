@@ -23,6 +23,7 @@ export const ErrorMessages = {
     NotFound: 'Organization not found.',
     AlreadyExists: 'An organization with this name already exists.',
     CreatedSuccessfully: 'Organization created successfully.',
+    UpdatedSuccessfully: 'Organization updated successfully.',
   },
   Service: {
     NameRequired: 'Service name is required.',
