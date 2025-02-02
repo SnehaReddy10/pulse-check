@@ -16,4 +16,11 @@ export const ErrorMessages = {
   Server: {
     InternalServerError: 'Internal Server error',
   },
+  Auth: {
+    Unauthorized: 'Unauthorized',
+  },
+  Organization: {
+    AlreadyExists: 'Organization already exists.',
+    CreatedSuccessfully: 'Organization created successfully.',
+  },
 };
