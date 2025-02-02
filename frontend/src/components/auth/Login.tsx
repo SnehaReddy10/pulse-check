@@ -10,7 +10,7 @@ import { loginSchema } from '@/validators/LoginSchema';
 import Loader from '../common/Loader';
 
 function Login() {
-  const [register, results] = useLoginMutation();
+  const [login, results] = useLoginMutation();
   const navigate = useNavigate();
   const toastContext = useContext(ToastContext);
 
@@ -39,7 +39,7 @@ function Login() {
   }, [results.error]);
 
   const onSubmit = (data: any) => {
-    register(data);
+    login(data);
   };
 
   if (results.isLoading) {
@@ -47,6 +47,7 @@ function Login() {
   }
 
   if (results.isSuccess) {
+    localStorage.setItem('token', results.data.token);
     navigate('/');
   }
 

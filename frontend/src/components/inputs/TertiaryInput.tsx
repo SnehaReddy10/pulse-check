@@ -20,7 +20,7 @@ function TertiaryInput({
   error?: string;
 }) {
   return (
-    <div className="flex flex-col gap-1 justify-center items-start w-full">
+    <div className="flex flex-col gap-1 justify-center items-start w-full text-black">
       {label && (
         <label
           htmlFor={placeholder}

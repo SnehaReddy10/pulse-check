@@ -5,12 +5,12 @@ import { useContext, useEffect } from 'react';
 import TertiaryInput from '../inputs/TertiaryInput';
 import { ToastContext } from '@/context/ToastContext';
 import { registerSchema } from '@/validators/RegisterSchema';
-import { useLoginMutation } from '@/store';
+import { useRegisterMutation } from '@/store';
 import { Button } from '../ui/button';
 import Loader from '../common/Loader';
 
 function Register() {
-  const [register, results] = useLoginMutation();
+  const [register, results] = useRegisterMutation();
   const navigate = useNavigate();
   const toastContext = useContext(ToastContext);
 
@@ -47,6 +47,7 @@ function Register() {
   }
 
   if (results.isSuccess) {
+    localStorage.setItem('token', results.data.token);
     navigate('/');
   }
 
