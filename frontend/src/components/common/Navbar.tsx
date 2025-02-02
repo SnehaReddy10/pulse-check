@@ -54,6 +54,7 @@ const components: { title: string; href: string; description: string }[] = [
 ];
 
 export default function Navbar() {
+  const [token, setToken] = React.useState(localStorage.getItem('token'));
   return (
     <div className="py-2 px-40 flex justify-center border-b-[1px] border-gray-900 shadow-sm shadow-gray-600">
       <NavigationMenu>
@@ -93,17 +94,18 @@ export default function Navbar() {
                       </a>
                     </NavigationMenuLink>
                   </li>
-                  <ListItem href="/docs" title="Introduction">
-                    Re-usable components built using Radix UI and Tailwind CSS.
-                  </ListItem>
-                  <ListItem href="/docs/installation" title="Installation">
-                    How to install dependencies and structure your app.
+                  <ListItem href="/organizations" title="Organizations">
+                    Manage your teams, settings, and configurations in one
+                    place.
                   </ListItem>
                   <ListItem
-                    href="/docs/primitives/typography"
-                    title="Typography"
+                    href="/organizations/679efaaf68611e3a1a5ea2d5/incidents"
+                    title="Incident Management"
                   >
-                    Styles for headings, paragraphs, lists...etc
+                    Track and resolve incidents to ensure system uptime.
+                  </ListItem>
+                  <ListItem href="/status-page" title="Status Page">
+                    Keep your users informed with real-time service status.
                   </ListItem>
                 </ul>
               </NavigationMenuContent>
@@ -127,22 +129,41 @@ export default function Navbar() {
               </NavigationMenuContent>
             </NavigationMenuItem>
           </div>
-          <div className="flex gap-2">
-            <NavigationMenuItem>
-              <Link to="/register">
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Register
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link to="/login">
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Login
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-          </div>
+          {!token && (
+            <div className="flex gap-2">
+              <NavigationMenuItem>
+                <Link to="/register">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Register
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link to="/login">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Login
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            </div>
+          )}
+          {token && (
+            <div className="flex gap-2">
+              <NavigationMenuItem>
+                <Link
+                  to="/"
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    setToken(null);
+                  }}
+                >
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Logout
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            </div>
+          )}
         </NavigationMenuList>
       </NavigationMenu>
     </div>
