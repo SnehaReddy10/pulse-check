@@ -13,24 +13,60 @@ import { organizationSchema } from '@/validators/OrganizatiobSchema';
 import { ToastContext } from '@/context/ToastContext';
 import CreateOrganizationForm from '../form/CreateOrganizationForm';
 import ServerError from '../common/ServerError';
+import {
+  useLazyGetOrganizationByIdQuery,
+  useUpdateOrganizationMutation,
+} from '@/store/organizations/organizationApi';
 
 function Organization() {
   const {
     data: organizations,
-    error,
-    isFetching,
+    error: getOrgsError,
+    isFetching: isFetchingOrgs,
   } = useGetAllOrganizationsQuery({});
-  const [createOrganization, results] = useCreateOrganizationMutation();
+
+  const [createOrganization, createOrgResults] =
+    useCreateOrganizationMutation();
+
+  const [updateOrganization, updateOrgResults] =
+    useUpdateOrganizationMutation();
+
+  let [
+    fetchOrganization,
+    {
+      data: currOrganization,
+      error: getOrgError,
+      isFetching: isFetchingOrg,
+      isSuccess,
+    },
+  ] = useLazyGetOrganizationByIdQuery({});
 
   const [isModalOpen, setModalOpen] = useState(false);
+  const [currOrg, setCurrOrg] = useState<{
+    name: string;
+    description: string;
+  } | null>(null);
 
   const toggleModal = () => {
+    setCurrOrg(null);
+    currOrganization = null;
     setModalOpen(!isModalOpen);
   };
+
+  const handleEditOrg = (id: string) => {
+    setModalOpen(true);
+    fetchOrganization(id);
+  };
+
+  if (!currOrg && isSuccess) {
+    setCurrOrg(currOrganization?.organization);
+  }
+
   const toastContext = useContext(ToastContext);
   const {
     register: registerField,
     handleSubmit,
+    setValue,
     reset,
     formState: { isValid, errors },
   } = useForm({
@@ -38,16 +74,18 @@ function Organization() {
     resolver: yupResolver(organizationSchema),
   });
 
-  if (error) {
+  if (getOrgsError || getOrgError) {
     return (
       <div className="flex h-full w-full justify-center items-center">
         <ServerError />
       </div>
     );
   }
+
   useEffect(() => {
-    if (results.error) {
-      const r = results.error as any;
+    if (createOrgResults.error || updateOrgResults.error) {
+      const r =
+        (createOrgResults.error as any) ?? (updateOrgResults.error as any);
 
       if (!toastContext) {
         throw new Error('useContext must be used within a ToastProvider');
@@ -57,18 +95,41 @@ function Organization() {
       showToast(r?.data.message, 'error', 'left-0 top-10');
       reset();
     }
-  }, [results.error]);
+  }, [createOrgResults.error, updateOrgResults.error]);
+
+  useEffect(() => {
+    if (currOrg) {
+      setValue('name', currOrg.name || '');
+      setValue('description', currOrg.description || '');
+    } else {
+      reset();
+    }
+  }, [currOrg]);
 
   const onSubmit = (data: any) => {
-    createOrganization(data);
+    if (currOrg) {
+      updateOrganization({ id: currOrganization?.organization?._id, ...data });
+    } else {
+      createOrganization(data);
+    }
   };
 
-  if (isFetching) {
+  if (
+    isFetchingOrgs ||
+    updateOrgResults.isLoading ||
+    createOrgResults.isLoading ||
+    isFetchingOrg
+  ) {
     return <Loader />;
   }
 
-  if (results.isSuccess && isModalOpen) {
+  if (
+    (createOrgResults.isSuccess || updateOrgResults.isSuccess) &&
+    isModalOpen
+  ) {
     setModalOpen(false);
+    createOrgResults.reset();
+    updateOrgResults.reset();
   }
 
   return (
@@ -79,6 +140,7 @@ function Organization() {
         onCreate={handleSubmit(onSubmit)}
         title="Establish Your Organization"
         tagLine="Easily manage your services and teams in one place"
+        action={`${currOrg ? 'Update' : 'Create'}`}
       >
         <CreateOrganizationForm
           handleSubmit={handleSubmit}
@@ -86,32 +148,23 @@ function Organization() {
           errors={errors}
           isValid={isValid}
           registerField={registerField}
+          title={currOrg?.name}
+          description={currOrg?.description}
         />
       </Modal>
 
       <div className="flex justify-end w-full">
         <Button onClick={toggleModal}>Create</Button>
       </div>
-      <div className="flex flex-col p-4 w-full">
-        <Grid
-          title=""
-          headers={[
-            { label: 'Name', id: 1, className: 'w-[100px]' },
-            { label: 'Description', id: 2, className: '' },
-            { label: 'Incidents', id: 3, className: 'w-[100px] text-center' },
-            { label: 'Created At', id: 4, className: 'w-[100px]' },
-          ]}
-          rows={organizations?.data?.map((org: any) => [
-            { label: org.name, className: 'w-[200px]' },
-            { label: org.description, className: 'w-[300px]' },
-            { label: org.servicesCount, className: 'w-[300px] text-center' },
-            { label: formatDate(org.createdAt), className: 'w-[200px]' },
-          ])}
-        />
-      </div>
+
+      <OrganizationGrid
+        handleEditOrg={handleEditOrg}
+        organizations={organizations}
+      />
     </div>
   );
 }
+
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleString('en-US', {
@@ -123,6 +176,38 @@ const formatDate = (dateString: string) => {
     second: '2-digit',
     hour12: true,
   });
+};
+
+const OrganizationGrid = ({ handleEditOrg, organizations }: any) => {
+  return (
+    <div className="flex flex-col p-4 w-full">
+      <Grid
+        onDelete={(s: any) => {}}
+        onEdit={handleEditOrg}
+        title=""
+        headers={[
+          { label: 'Name', id: 1, className: 'w-[100px]' },
+          { label: 'Description', id: 2, className: '' },
+          { label: 'Incidents', id: 3, className: 'w-[100px] text-center' },
+          { label: 'Created At', id: 4, className: 'w-[100px]' },
+        ]}
+        rows={organizations?.data?.map((org: any) => [
+          { label: org.name, id: org._id, className: 'w-[200px]' },
+          { label: org.description, id: org._id, className: 'w-[300px]' },
+          {
+            label: org.servicesCount,
+            id: org._id,
+            className: 'w-[300px] text-center',
+          },
+          {
+            label: formatDate(org.createdAt),
+            id: org._id,
+            className: 'w-[200px]',
+          },
+        ])}
+      />
+    </div>
+  );
 };
 
 export default Organization;

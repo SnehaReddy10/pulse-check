@@ -7,6 +7,7 @@ interface ModalProps {
   tagLine: string;
   onCreate: () => void;
   children: React.ReactNode;
+  action: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -16,6 +17,7 @@ const Modal: React.FC<ModalProps> = ({
   tagLine,
   onCreate,
   children,
+  action,
 }) => {
   if (!isOpen) return null;
 
@@ -49,7 +51,7 @@ const Modal: React.FC<ModalProps> = ({
             onClick={onCreate}
             className="px-4 py-2 bg-black text-white rounded-md"
           >
-            Create
+            {action}
           </button>
         </div>
       </div>
